@@ -123,7 +123,9 @@ func main() {
 	}
 	fmt.Printf("Printing Inorder:\n")
 	bst.inorder()
-	bst.reset()
+	bst.Delete(70)
+	// bst.reset()
+	bst.inorder()
 
 	// eg := []int{4, 5, 7, 6, -1, 99, 5}
 	// for _, val := range eg {

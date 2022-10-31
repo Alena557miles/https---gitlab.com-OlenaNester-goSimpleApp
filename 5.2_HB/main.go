@@ -85,6 +85,23 @@ func getIndex(key string) (index int) {
 	return int(hash(key)) % MAP_SIZE
 }
 
+func (h *HashMap) delete(key string) bool {
+	i := getIndex(key)
+	if h.Data[i] != nil {
+		node := h.Data[i]
+		for ; ; node = node.next {
+			if node.key == key {
+				h.Data[i] = nil
+				return true
+			}
+			if node.next == nil {
+				break
+			}
+		}
+	}
+	return false
+}
+
 func main() {
 	a := NewDict()
 	a.Insert("name", "ishan")
@@ -97,5 +114,9 @@ func main() {
 		fmt.Println("Value did not match!")
 	}
 
+	fmt.Println(a)
+	// a.Get("city")
+	// a.delete("city")
+	fmt.Println(a.delete("city"))
 	fmt.Println(a)
 }
