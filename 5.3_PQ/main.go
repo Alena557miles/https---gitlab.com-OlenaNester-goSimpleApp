@@ -29,12 +29,29 @@ func (pq PriorityQueue) Swap(i, j int) {
 	pq[j].index = j
 }
 
-//func (pq *PriorityQueue) Push(x any) {
+func (pq *PriorityQueue) Push(x any) {
+	n := len(*pq)
+	item := x.(*Item)
+	item.index = n
+	*pq = append(*pq, item)
+}
 
-//func (pq *PriorityQueue) Pop() any {
+func (pq *PriorityQueue) Pop() any {
+	temp := *pq
+	n := len(temp)
+	item := temp[n-1]
+	temp[n-1] = nil
+	item.index = -1
+	*pq = temp[0 : n-1]
+	return item
+}
 
 // update modifies the priority and value of an Item in the queue.
-//func (pq *PriorityQueue) update(item *Item, value string, priority int) {
+func (pq *PriorityQueue) update(item *Item, value string, priority int) {
+	item.value = value
+	item.priority = priority
+	heap.Fix(pq, item.index)
+}
 
 // This example creates a PriorityQueue with some items, adds and manipulates an item,
 // and then removes the items in priority order.
