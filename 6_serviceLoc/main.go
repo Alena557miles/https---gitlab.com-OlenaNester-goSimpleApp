@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type ServiceLocator struct {
 	services []any
@@ -12,10 +15,10 @@ func (s *ServiceLocator) Register(name string, some any) {
 	s.names = append(s.names, name)
 }
 
-func (s *ServiceLocator) Get(name string) bool {
-	for _, t := range s.names {
+func (s *ServiceLocator) Get(name string) any {
+	for i, t := range s.names {
 		if t == name {
-			return true
+			return s.services[i]
 		}
 	}
 	return false
@@ -33,21 +36,29 @@ type Doer interface {
 
 func main() {
 	l := ServiceLocator{}
-	l.Register(`serv1`, &Concrete{"tomate"})
 
-	if l.Get(`serv1`) {
-		fmt.Println("by interface pointer ok")
-	}
+	a := &Concrete{"first"}
+	a.Do()
+	fmt.Println("Method Name: ", a.Name)
+	l.Register(`Aname`, a)
+	aM := l.Get(`Aname`)
+	fmt.Println("Method from SL: ", aM)
+	fmt.Println("Type of aM: ", reflect.TypeOf(aM))
 
-	// var z Doer
-	// if l.Get(&z) {
-	// 	fmt.Println("by interface ok")
-	// 	fmt.Println(z)
-	// }
+	b := Concrete{"second"}
+	b.Do()
+	fmt.Println("Method Name: ", b.Name)
+	l.Register(`Bname`, b)
+	bM := l.Get(`Bname`)
+	fmt.Println("Method from SL: ", bM)
+	fmt.Println("Type of aM: ", reflect.TypeOf(bM))
 
-	// var y *Concrete
-	// if l.Get(&y) {
-	// 	fmt.Println("by struct pointer ok")
-	// 	fmt.Println(y)
-	// }
+	// var c Doer
+	// l.Register("cname", c)
+	// cM := l.Get("cname")
+
+	// fmt.Println("c: ", cM)
+	// fmt.Println("Type of c: ", reflect.TypeOf(cM))
+	fmt.Println(l)
+
 }
