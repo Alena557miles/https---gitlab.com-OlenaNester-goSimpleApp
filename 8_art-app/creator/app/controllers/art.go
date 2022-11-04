@@ -16,7 +16,6 @@ func (ac *ArtController) CreateArt(a *models.Art) {
 func (ac *ArtController) FindArt(name string) *models.Art {
 	for _, art := range ac.arts {
 		if art.Name == name {
-			// fmt.Println("Art Name : ", art.Name)
 			return art
 		}
 	}
@@ -25,7 +24,7 @@ func (ac *ArtController) FindArt(name string) *models.Art {
 
 func (ac *ArtController) AssignedArtToArtist(art *models.Art, artist *models.Artist) *models.Art {
 	if art.IsntAssigned() {
-		art.Owner = artist
+		art.Owner = artist.Name
 		artist.Arts = append(artist.Arts, art)
 		return art
 	} else {

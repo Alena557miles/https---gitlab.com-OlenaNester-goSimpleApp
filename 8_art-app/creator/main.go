@@ -42,6 +42,7 @@ START:
 			fmt.Println(err)
 		}
 		fmt.Println("---Artist registrated successfuly---")
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `ca`:
@@ -63,6 +64,7 @@ START:
 			fmt.Println(err)
 		}
 		fmt.Println("---________Art created successfuly________---")
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `cg`:
@@ -80,6 +82,7 @@ START:
 			fmt.Println(err)
 		}
 		fmt.Println("---Gallery created successfuly---")
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `aa`:
@@ -106,6 +109,7 @@ START:
 			fmt.Println(err)
 		}
 		fmt.Println("---Art was assigned to Artist successfuly---")
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `rg`:
@@ -128,6 +132,7 @@ START:
 			}
 			fmt.Println("---Artist was registrated on the Gallery successfuly---")
 		}
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `da`:
@@ -144,7 +149,8 @@ START:
 		artist := artistC.FindArtist(artistName)
 		//delete
 		galleryC.DeleteArtist(gallery, artist)
-		fmt.Println("---Artist was registrated on the Gallery successfuly---")
+		fmt.Println("---Artist was removed from the Gallery successfuly---")
+		fmt.Println("\n\n\n\n\n\n")
 		goto START
 
 	case `e`:

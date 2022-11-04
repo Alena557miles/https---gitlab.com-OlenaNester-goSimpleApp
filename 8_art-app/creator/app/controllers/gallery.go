@@ -22,10 +22,12 @@ func (gc *GalleryController) FindGallery(name string) *models.Gallery {
 }
 
 func (gc *GalleryController) RegisterArtist(gallery *models.Gallery, artist *models.Artist) {
+
 	if len(artist.Arts) > 0 {
 		gc.Galleries = append(gc.Galleries, gallery)
 		gallery.Artists = append(gallery.Artists, artist)
 		artist.OnGallery = true
+		return
 	}
 	if len(artist.Arts) == 0 {
 		fmt.Println("We can not register an Artist without Arts")
