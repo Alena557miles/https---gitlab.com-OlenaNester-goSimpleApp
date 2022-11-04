@@ -21,7 +21,7 @@ func (s *ServiceLocator) Get(name string) any {
 			return s.services[i]
 		}
 	}
-	return false
+	return nil
 }
 
 type Concrete struct {
