@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"creator/app/models"
+	"creator/app/views"
 	"fmt"
 )
 
@@ -42,4 +43,48 @@ func (gc *GalleryController) DeleteArtist(gallery *models.Gallery, artist *model
 			gallery.DeleteArtist(artist)
 		}
 	}
+}
+
+func (gc *GalleryController) GalleryCreation() {
+	// CREATE A GALLERY
+	fmt.Printf("Gallery name:\n")
+	var name string
+	_, _ = fmt.Scan(&name)
+	fmt.Printf("Gallery location (city): \n")
+	var l string
+	_, _ = fmt.Scan(&l)
+	gallery := &models.Gallery{Name: name, Location: l}
+	// create an gallery and print information about it
+	gc.CreateGallery(gallery)
+	if err := views.PrintGallery(gallery); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("---Gallery created successfuly---")
+	fmt.Println("")
+}
+
+func (gc *GalleryController) RemoveArtistFromGal(sl Getter) {
+	//finding the gallery
+	fmt.Printf("From which Gallery ? (Print name of the Gallery):\n")
+	var galleryName string
+	_, _ = fmt.Scan(&galleryName)
+	gallery := gc.FindGallery(galleryName)
+	// finding the artist
+	fmt.Printf("Which Artist do you want to remove from the Gallery? (Print name of the artist):\n")
+	var artistName string
+	_, _ = fmt.Scan(&artistName)
+	var ar ArsistFinder
+	sl.Get(&ar)
+	artist := ar.FindArtist(artistName)
+	//delete
+	gc.DeleteArtist(gallery, artist)
+	if err := views.PrintGallery(gallery); err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("---Artist was removed from the Gallery successfuly---")
+	fmt.Println("")
+}
+
+type ArsistFinder interface {
+	FindArtist(name string) *models.Artist
 }
