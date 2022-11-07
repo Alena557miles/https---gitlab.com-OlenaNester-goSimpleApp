@@ -4,13 +4,15 @@ type User struct {
 	name  string
 	email string
 	td    TODOer
-	on    Courser
+	On    Courser
+	// S     ShowTasker
 }
 
 func (u *User) ShowMyTasks(sl Getter) {
 	var sh ShowTasker
 	sl.Get(&sh)
 	sh.ShowTasks()
+	// u.S = sh
 }
 
 func (u *User) SetTODO(sl Getter) {
@@ -22,7 +24,7 @@ func (u *User) SetTODO(sl Getter) {
 func (u *User) SetCourse(sl Getter) {
 	var c Courser
 	sl.Get(&c)
-	u.on = c
+	u.On = &c
 }
 
 func NewUser(n, e string) *User {

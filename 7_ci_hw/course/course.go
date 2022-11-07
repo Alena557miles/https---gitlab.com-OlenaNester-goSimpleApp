@@ -13,11 +13,6 @@ func (c *Course) Users() []*Userer {
 	return c.users
 }
 
-func New(name string) *Course {
-	c := Course{title: name}
-	return &c
-}
-
 func NewCourse(title string, sl ...Getter) *Course {
 	c := &Course{title: title}
 	for _, a := range sl {
@@ -33,5 +28,4 @@ type Getter interface {
 	Get(some any) bool
 }
 type Userer interface {
-	ShowMyTasks()
 }
