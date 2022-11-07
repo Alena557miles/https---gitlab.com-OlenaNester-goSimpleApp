@@ -5,20 +5,8 @@ import (
 )
 
 type TODO struct {
-	owner *User
+	owner Userer
 	tasks []Task
-}
-
-type User struct {
-	name  string
-	email string
-	td    *TODO
-	on    *Course
-}
-
-type Course struct {
-	title string
-	users []*User
 }
 
 func (t TODO) ShowTasks() {
@@ -46,11 +34,9 @@ func NewTODO(sl Getter, text ...string) *TODO {
 		panic(`arg must be even`)
 	}
 
-	var us NewUserer
-	sl.Get(&us)
-	user := us.NewUser()
-
-	res := &TODO{owner: user}
+	var u Userer
+	sl.Get(&u)
+	res := &TODO{owner: sl}
 
 	var i int
 	for {
@@ -64,10 +50,8 @@ func NewTODO(sl Getter, text ...string) *TODO {
 	return res
 }
 
-type NewUserer interface {
-	NewUser() *User
-}
-
 type Getter interface {
 	Get(some any) bool
+}
+type Userer interface {
 }

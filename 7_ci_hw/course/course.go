@@ -1,40 +1,37 @@
 package course
 
-import "ci_hw/user"
-
 type Course struct {
 	title string
-	users []*user.User
+	users []*Userer
 }
 
-// type User struct {
-// 	name  string
-// 	email string
-// 	td    *TODO
-// 	on    *Course
-// }
-// type TODO struct {
-// 	owner *User
-// 	tasks []Task
-// }
-// type Task struct {
-// 	name        string
-// 	description string
-// }
-
-func (c *Course) addUser(u *user.User) {
-	c.users = append(c.users, u)
+func (c *Course) addUser(u Userer) {
+	c.users = append(c.users, &u)
 }
 
-func (c *Course) Users() []*user.User {
+func (c *Course) Users() []*Userer {
 	return c.users
 }
 
-func NewCourse(title string, u ...*user.User) *Course {
+func New(name string) *Course {
+	c := Course{title: name}
+	return &c
+}
+
+func NewCourse(title string, sl ...Getter) *Course {
 	c := &Course{title: title}
-	for i := range u {
-		c.addUser(u[i])
+	for _, a := range sl {
+		var u Userer
+		a.Get(&u)
+		c.addUser(u)
 	}
 
 	return c
+}
+
+type Getter interface {
+	Get(some any) bool
+}
+type Userer interface {
+	ShowMyTasks()
 }
