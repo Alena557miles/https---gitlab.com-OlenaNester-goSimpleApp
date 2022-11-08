@@ -6,6 +6,7 @@ import (
 	"ci_hw/todo"
 	"ci_hw/user"
 	"fmt"
+	"reflect"
 )
 
 func main() {
@@ -38,22 +39,18 @@ func main() {
 	sl.Register(td2)
 	u2.SetTODO(sl)
 
-	// // -----------------
-	// fmt.Println(u1)
-	// fmt.Println(td1)
-	// fmt.Println(`ffffffffffff`)
-	// fmt.Println(u2)
-	// fmt.Println(td2)
-	// // -----------------
-
 	c := course.NewCourse(`Golang for beginners`, sl, sl)
-	fmt.Println(`Course info:`, c)
-	u2.ShowMyTasks(sl)
+	// fmt.Println(`Course info:`, c)
+	// u2.ShowMyTasks(sl)
+	// u2.SetCourse(sl)
+	// fmt.Println(u2.On)
 
 	for _, u := range c.Users() {
 		fmt.Println(u)
+		fmt.Println(reflect.TypeOf(u))
+		fmt.Println(reflect.TypeOf(u1))
 
-		// u.ShowMyTasks(sl)
+		// u.ShowMyTasks()
 	}
-
+	// fmt.Println("Show my tasks(user)", u2.S)
 }

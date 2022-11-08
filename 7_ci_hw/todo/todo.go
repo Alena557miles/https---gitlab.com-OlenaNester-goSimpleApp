@@ -34,8 +34,6 @@ func NewTODO(sl Getter, text ...string) *TODO {
 		panic(`arg must be even`)
 	}
 
-	var u Userer
-	sl.Get(&u)
 	res := &TODO{owner: sl}
 
 	var i int
