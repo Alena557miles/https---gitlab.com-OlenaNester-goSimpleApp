@@ -5,14 +5,10 @@ type User struct {
 	email string
 	td    TODOer
 	On    Courser
-	// S     ShowTasker
 }
 
-func (u *User) ShowMyTasks(sl Getter) {
-	var sh ShowTasker
-	sl.Get(&sh)
-	sh.ShowTasks()
-	// u.S = sh
+func (u *User) ShowMyTasks() {
+	u.td.ShowTasks()
 }
 
 func (u *User) SetTODO(sl Getter) {
@@ -32,12 +28,12 @@ func NewUser(n, e string) *User {
 }
 
 type TODOer interface {
+	ShowTasks()
 }
 
 type Courser interface {
 }
-type ShowTasker interface {
-	ShowTasks()
+type ShowMyTasker interface {
 }
 
 type Getter interface {
