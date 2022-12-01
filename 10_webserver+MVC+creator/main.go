@@ -8,36 +8,16 @@ import (
 	"github.com/Alena557miles/gowebserver"
 )
 
-type ControllersSet interface {
-	Path() string
-	Name() string
-	DoAction(string)
-}
-
 func main() {
-	artC := &controllers.ArtController{}
 	artistC := &controllers.ArtistController{}
+	artC := &controllers.ArtController{}
 	galleryC := &controllers.GalleryController{}
 	sl := &sl.ServiceLocator{}
+	sl.Register(artC)
 	sl.Register(artistC)
 	sl.Register(galleryC)
 
 	gowebserver.StartServer(artistC)
-	// gowebserver.StartServer(artC)
-
-	// START:
-
-	// fmt.Printf("APP 'CREATOR' CHOOSE WHAT TO DO:" +
-	// 	"\nRegister an Artist: ra" +
-	// 	"\nCreate an art: ca" +
-	// 	"\nAdd art to the Artist: aa" +
-	// 	"\nCreate a Gallery: cg" +
-	// 	"\nRegister an Artist in Gallery: rg" +
-	// 	"\nDelete an Artist from the Gallery: da" +
-	// 	"\nYou want to exit: e\n")
-
-	// var command string
-	// _, _ = fmt.Scan(&command)
 
 	// switch command {
 	// case `ra`:

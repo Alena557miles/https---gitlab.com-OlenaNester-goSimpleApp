@@ -19,10 +19,10 @@ func (ac *ArtistController) Path() string {
 }
 
 func (ac *ArtistController) DoAction(a string) {
-	// switch a{
-	// case `CreateArtist`:
-	// 	ac.CreateArtist()
-	// }
+	switch a {
+	case `Registration`:
+		ac.Registration()
+	}
 }
 
 func (ac *ArtistController) CreateArtist(a *models.Artist) {

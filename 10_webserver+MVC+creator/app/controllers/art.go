@@ -18,12 +18,12 @@ func (ac *ArtController) Path() string {
 	return `/art/create`
 }
 
-// func (ac *ArtistController) DoAction(a string) {
-// 	// switch a {
-// 	// case `ArtCreation`:
-// 	// 	// ac.ArtCreation()
-// 	// }
-// }
+func (ac *ArtController) DoAction(a string) {
+	switch a {
+	case `ArtCreation`:
+		ac.ArtCreation()
+	}
+}
 
 func (ac *ArtController) CreateArt(a *models.Art) {
 	ac.arts = append(ac.arts, a)

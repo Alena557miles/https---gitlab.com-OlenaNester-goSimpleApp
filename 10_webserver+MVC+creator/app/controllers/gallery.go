@@ -18,9 +18,13 @@ func (ac *GalleryController) Path() string {
 	return `/gallery`
 }
 
-func (ac *GalleryController) DoAction(string) {
-
+func (ac *GalleryController) DoAction(a string) {
+	switch a {
+	case `GalleryCreation`:
+		ac.GalleryCreation()
+	}
 }
+
 func (gc *GalleryController) CreateGallery(g *models.Gallery) {
 	gc.Galleries = append(gc.Galleries, g)
 }
