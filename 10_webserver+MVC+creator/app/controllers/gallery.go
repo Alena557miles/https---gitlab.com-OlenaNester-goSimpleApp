@@ -10,6 +10,17 @@ type GalleryController struct {
 	Galleries []*models.Gallery
 }
 
+func (ac *GalleryController) Name() string {
+	return `GalleryController`
+}
+
+func (ac *GalleryController) Path() string {
+	return `/gallery`
+}
+
+func (ac *GalleryController) DoAction(string) {
+
+}
 func (gc *GalleryController) CreateGallery(g *models.Gallery) {
 	gc.Galleries = append(gc.Galleries, g)
 }

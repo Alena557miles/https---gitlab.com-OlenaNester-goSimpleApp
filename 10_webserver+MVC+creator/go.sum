@@ -1,4 +1,6 @@
 github.com/Alena557miles/gowebserver v0.0.0-20221123210050-71359b812ffc h1:+9yykg/6wE6BhTjT0vpIe1icwt+1Gpuai/BqzwxY/aE=
 github.com/Alena557miles/gowebserver v0.0.0-20221123210050-71359b812ffc/go.mod h1:XCUPuHFQqA8wkIRtrRltS/LTW5ar3x9L5sX2ktIN62M=
+github.com/Alena557miles/gowebserver v0.0.0-20221129195003-57ed1d51b5fc h1:jiBOCmwUV3g9QrqX/XQfMR2IVElUa5CXHXgPrZBekfU=
+github.com/Alena557miles/gowebserver v0.0.0-20221129195003-57ed1d51b5fc/go.mod h1:XCUPuHFQqA8wkIRtrRltS/LTW5ar3x9L5sX2ktIN62M=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
 github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=

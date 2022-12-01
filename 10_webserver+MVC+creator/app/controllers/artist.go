@@ -10,6 +10,21 @@ type ArtistController struct {
 	artists []*models.Artist
 }
 
+func (ac *ArtistController) Name() string {
+	return `ArtistController`
+}
+
+func (ac *ArtistController) Path() string {
+	return `/artist`
+}
+
+// func (ac *ArtistController)DoAction(a string){
+// 	switch a{
+// 	case `CreateArtist`:
+// 		ac.CreateArtist()
+// 	}
+// }
+
 func (ac *ArtistController) CreateArtist(a *models.Artist) {
 	ac.artists = append(ac.artists, a)
 }
