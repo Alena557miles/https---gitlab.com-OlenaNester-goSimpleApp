@@ -2,40 +2,28 @@ package main
 
 import (
 	"creator/app/controllers"
+	"creator/app/sl"
 	"fmt"
 
 	"github.com/Alena557miles/gowebserver"
 )
 
-// type ControllersSet struct {
-// 	Cntrs []Controller
-// }
-
-// type Controller interface {
-// 	Path() string
-// 	CreateArt()
-// }
-
-// type ControllersInt interface {
-// 	Controllers() []Controller
-// }
-
-// func (c ControllersSet) Controllers() {
-
-// }
+type ControllersSet interface {
+	Path() string
+	Name() string
+	DoAction(string)
+}
 
 func main() {
-	// artistC := &controllers.ArtistController{}
 	artC := &controllers.ArtController{}
-	// galleryC := &controllers.GalleryController{}
-	// sl := &sl.ServiceLocator{}
-	gowebserver.StartServer(artC)
-	// cSet := &ControllersSet{}
-	// cSet.Cntrs = append(cSet.Cntrs, artistC)
-	// cSet.Cntrs = append(cSet.Cntrs, artC)
-	// cSet.Cntrs = append(cSet.Cntrs, galleryC)
+	artistC := &controllers.ArtistController{}
+	galleryC := &controllers.GalleryController{}
+	sl := &sl.ServiceLocator{}
+	sl.Register(artistC)
+	sl.Register(galleryC)
 
-	// cSet.Controllers()
+	gowebserver.StartServer(artistC)
+	// gowebserver.StartServer(artC)
 
 	// START:
 

@@ -15,15 +15,15 @@ func (ac *ArtistController) Name() string {
 }
 
 func (ac *ArtistController) Path() string {
-	return `/artist`
+	return `/artist/create`
 }
 
-// func (ac *ArtistController)DoAction(a string){
-// 	switch a{
-// 	case `CreateArtist`:
-// 		ac.CreateArtist()
-// 	}
-// }
+func (ac *ArtistController) DoAction(a string) {
+	// switch a{
+	// case `CreateArtist`:
+	// 	ac.CreateArtist()
+	// }
+}
 
 func (ac *ArtistController) CreateArtist(a *models.Artist) {
 	ac.artists = append(ac.artists, a)
