@@ -1,9 +1,9 @@
 package models
 
 type Gallery struct {
-	Name     string
-	Location string
-	Artists  []*Artist
+	Name string
+	//Location string
+	Artists []*Artist
 }
 
 func (g *Gallery) DeleteArtist(artist *Artist) []*Artist {
