@@ -3,30 +3,32 @@ package controllers
 import (
 	"creator/models"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 
 	"fmt"
 )
 
 type ArtController struct {
-	arts []*models.Art
+	arts   []*models.Art
+	router *mux.Router
 }
 
-//func (ac *ArtController) Name() string {
-//	return `ArtController`
-//}
-//
-//func (ac *ArtController) Path() string {
-//	return `art?action=create`
-//}
-//
-//func (ac *ArtController) DoAction(a string) {
-//	switch a {
-//	case `ArtCreation`:
-//	}
-//}
+func (ac *ArtController) RegisterRouter(r *mux.Router) {
+	ac.router = r
+}
+
+func (ac *ArtController) RegisterActions() {
+	// CREATE AN ART
+	// localhost:8080/createart/blackCat
+	ac.router.HandleFunc("/createart/{art}", ac.ArtCreation)
+
+	//ASSIGN AN ART TO THE ARTIST (BY NAME)
+	// localhost:8080/artist/assign/Fillip/blackCat
+	ac.router.HandleFunc("/artist/assign/{artist}/{art}", ac.AssignArt)
+}
 
 func (ac *ArtController) CreateArt(a *models.Art) {
 	ac.arts = append(ac.arts, a)
@@ -88,11 +90,3 @@ func (ac *ArtController) AssignArt(rw http.ResponseWriter, r *http.Request) {
 	}
 	rw.Write(jsonResp)
 }
-
-//type ArtistFinder interface {
-//	FindArtist(name string) *models.Artist
-//}
-//
-//type Getter interface {
-//	Get(some any) bool
-//}

@@ -1,4 +1,4 @@
-package webserver
+package webservergo
 
 import (
 	"context"
@@ -13,37 +13,27 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type ControllerSet interface {
-	Controllers() []Controller
-}
-
 type Controller interface {
-	CreateArt()
+	RegisterRouter(*mux.Router)
+	RegisterActions()
 }
 
-func SatrtServer(cs ControllerSet) {
+func StartServer(controllers ...Controller) {
 	ctx := context.Background()
-	rtr := mux.NewRouter()
+	router := mux.NewRouter()
 	srv := &http.Server{
 		Addr:              `0.0.0.0:8080`,
 		ReadTimeout:       time.Millisecond * 200,
 		WriteTimeout:      time.Millisecond * 200,
 		IdleTimeout:       time.Second * 10,
 		ReadHeaderTimeout: time.Millisecond * 200,
-		Handler:           rtr,
+		Handler:           router,
 	}
 
-	rtr.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
-		_, _ = rw.Write([]byte("Hello!"))
-	})
-	rtr.HandleFunc("/healthcheck", func(rw http.ResponseWriter, r *http.Request) {
-		_, _ = rw.Write([]byte(`OK`))
-	})
-	rtr.HandleFunc("/point3", func(rw http.ResponseWriter, r *http.Request) {
-		_, _ = rw.Write([]byte(`I'm point 3'`))
-	})
-
-	http.Handle("/", rtr)
+	for _, concontroller := range controllers {
+		concontroller.RegisterRouter(router)
+		concontroller.RegisterActions()
+	}
 
 	go func() {
 		log.Println(`Web Server started`)

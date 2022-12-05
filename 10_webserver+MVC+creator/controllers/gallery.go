@@ -4,29 +4,30 @@ import (
 	"creator/models"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type GalleryController struct {
 	Galleries []*models.Gallery
+	router    *mux.Router
 }
 
-//func (ac *GalleryController) Name() string {
-//	return `GalleryController`
-//}
-//
-//func (ac *GalleryController) Path() string {
-//	return `/gallery`
-//}
-//
-//func (ac *GalleryController) DoAction(a string) {
-//	switch a {
-//	case `GalleryCreation`:
-//		ac.GalleryCreation()
-//	}
-//}
+func (gc *GalleryController) RegisterRouter(r *mux.Router) {
+	gc.router = r
+}
+
+func (gc *GalleryController) RegisterActions() {
+	// CREATE GALLERY
+	// localhost:8080/creategallery/Tokio
+	gc.router.HandleFunc("/creategallery/{gallery}", gc.GalleryCreation)
+
+	// DELETE AN ARTIST FROM GALLERY
+	// localhost:8080/artist/delete/Fillip/Tokio
+	gc.router.HandleFunc("/artist/delete/{artist}/{gallery}", gc.RemoveArtistFromGal)
+}
 
 func (gc *GalleryController) CreateGallery(g *models.Gallery) {
 	gc.Galleries = append(gc.Galleries, g)
@@ -95,7 +96,3 @@ func (gc *GalleryController) RemoveArtistFromGal(rw http.ResponseWriter, r *http
 	}
 	rw.Write(jsonResp)
 }
-
-//type ArsistFinder interface {
-//	FindArtist(name string) *models.Artist
-//}

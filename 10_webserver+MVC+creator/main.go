@@ -1,17 +1,14 @@
 package main
 
-import "creator/webservergo"
+import (
+	"creator/controllers"
 
-//type ControllersSet interface {
-//	Controllers() []Controller
-//}
-//
-//type Controller interface {
-//	Path() string
-//	Name() string
-//	DoAction(string)
-//}
+	"github.com/Alena557miles/webservergo"
+)
 
 func main() {
-	webservergo.StartServer()
+	artistC := &controllers.ArtistController{}
+	artC := &controllers.ArtController{}
+	galleryC := &controllers.GalleryController{}
+	webservergo.StartServer(artistC, artC, galleryC)
 }

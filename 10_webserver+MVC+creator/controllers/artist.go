@@ -3,33 +3,35 @@ package controllers
 import (
 	"creator/models"
 	"encoding/json"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 type ArtistController struct {
 	artists []*models.Artist
+	router  *mux.Router
 }
 
-//func (ac *ArtistController) Name() string {
-//	return `ArtistController`
-//}
-//
-//func (ac *ArtistController) Path() string {
-//	return `/artist/create`
-//}
-//
-//func (ac *ArtistController) DoAction(a string) {
-//	switch a {
-//	case `Registration`:
-//		ac.Registration()
-//	}
-//}
+func (ac *ArtistController) RegisterRouter(r *mux.Router) {
+	ac.router = r
+}
+
+func (ac *ArtistController) RegisterActions() {
+	// CREATE AN ARTIST
+	// localhost:8080/createartist/Fillip
+	ac.router.HandleFunc("/createartist/{artist}", ac.Registration)
+
+	//REGISTRATION AN ARTIST ON THE GALLERY
+	// localhost:8080/artist/register/Fillip/Tokio
+	ac.router.HandleFunc("/artist/register/{artist}/{gallery}", ac.ArtistRegistration)
+}
 
 func (ac *ArtistController) CreateArtist(a *models.Artist) {
 	ac.artists = append(ac.artists, a)
 }
+
 func (ac *ArtistController) FindArtist(name string) *models.Artist {
 	for _, artist := range ac.artists {
 		if artist.Name == name {
@@ -71,12 +73,3 @@ func (ac *ArtistController) ArtistRegistration(rw http.ResponseWriter, r *http.R
 	}
 	rw.Write(jsonResp)
 }
-
-//type GalleryFinder interface {
-//	FindGallery(name string) *models.Gallery
-//	RegisterArtist(gallery *models.Gallery, artist *models.Artist)
-//}
-//
-//type MyGetter interface {
-//	Get(some any) bool
-//}
