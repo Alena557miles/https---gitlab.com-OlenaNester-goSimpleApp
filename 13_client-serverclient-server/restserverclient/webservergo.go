@@ -17,11 +17,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
+type BStruct struct {
+	Jsonrpc float64 `json:"jsonrpc"`
+	Method  string  `json:"method"`
+	Params  []struct {
+		Content string `json:"Content"`
+	} `json:"params"`
+}
+
 func doSomething(rw http.ResponseWriter, r *http.Request) {
 	var vars map[string]string = mux.Vars(r)
 	var number string = vars["number"]
+	log.Printf(`Value recieved from client : %s`, number)
 	resp := make(map[string]string)
-	resp["message"] = `recieved number is :  ` + number
+	resp["message"] = `received number is :  ` + number
 	number = number + "1"
 	log.Printf(`Value after concat is : %s`, number)
 	jsonResp, err := json.Marshal(resp)
@@ -32,23 +41,23 @@ func doSomething(rw http.ResponseWriter, r *http.Request) {
 	startServer(number)
 }
 
-func startServer(num any) {
-	//log.Printf(`number from first server: %s`, num)
+func startServer(num string) {
 	c := http.Client{Timeout: time.Second}
 	req, err := http.NewRequest(`POST`, `http://localhost:8081/concat`, nil)
 	if err != nil {
 		fmt.Printf("Error: %s\\n", err)
 		return
 	}
-	body := []byte(`{	
-		"jsonrpc": 2.0,
-		"method": "concat.ConcatNumbers",
-		"params": [{
-		"Content": "7"
-		}]
-	})`)
+
+	body := `{"jsonrpc": 2.0,"method": "concat.ConcatNumbers","params": [{"Content": "num"}]}`
+	bodytobyte := []byte(body)
+	var bodyStruct BStruct
+	json.Unmarshal(bodytobyte, &bodyStruct)
+	bodyStruct.Params[0].Content = num
+	resultBody, _ := json.Marshal(&BStruct{Jsonrpc: 2.0, Method: "concat.ConcatNumbers", Params: bodyStruct.Params})
+
 	req.Header.Add(`Content-Type`, `application/json`)
-	neededBody := io.NopCloser(bytes.NewReader(body))
+	neededBody := io.NopCloser(bytes.NewReader(resultBody))
 	req.Body = neededBody
 	resp, err := c.Do(req)
 	if err != nil {

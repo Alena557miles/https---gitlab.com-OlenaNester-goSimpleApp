@@ -17,11 +17,11 @@ type Response struct {
 }
 
 func (s *SomeService) ConcatNumbers(r *http.Request, args *SomeArgs, result *Response) error {
-	log.Printf(`number from first server: %s`, args.Content)
+	log.Printf(`Value from first server: %s`, args.Content)
 	var res string
 	res = args.Content + "2"
 	*result = Response{Result: res}
-	log.Printf(`ConcatNumbers is working, result is: %s `, res)
+	log.Printf(`Value after concat is: %s `, res)
 	return nil
 }
 
