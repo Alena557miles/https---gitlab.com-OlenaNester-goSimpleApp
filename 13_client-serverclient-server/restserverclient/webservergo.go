@@ -21,50 +21,81 @@ type BStruct struct {
 	Jsonrpc float64 `json:"jsonrpc"`
 	Method  string  `json:"method"`
 	Params  []struct {
-		Content string `json:"Content"`
+		A string `json:"A"`
+		B string `json:"B"`
 	} `json:"params"`
+}
+
+type RPCResponse struct {
+	JSONRPC string      `json:"jsonrpc"`
+	Result  interface{} `json:"result,omitempty"`
+	//Error   *RPCError   `json:"error,omitempty"`
+	ID uint `json:"id"`
+}
+
+type BodyResponse struct {
+	Jsonrpc float64 `json:"jsonrpc"`
+	Result  string  `json:"result"`
+	Id      string  `json:"id"`
 }
 
 func doSomething(rw http.ResponseWriter, r *http.Request) {
 	var vars map[string]string = mux.Vars(r)
-	var number string = vars["number"]
-	log.Printf(`Value recieved from client : %s`, number)
+	var username string = vars["username"]
+	log.Printf(`Client said to me, that your number is : %s`, username)
 	resp := make(map[string]string)
-	resp["message"] = `received number is :  ` + number
-	number = number + "1"
-	log.Printf(`Value after concat is : %s`, number)
+	username = username + " :) "
+	log.Printf(`Nice to meet you : %s`, username)
+	// starting JSON-RPC server
+	respFrom2server := startServer(username)
+	// print response from JSON-RPC server
+	log.Printf(`Response from JSON-RPS SERVER: %s`, respFrom2server)
+	// send json to the client
+	respfromRest := respFrom2server + " Have a nice day!"
+	resp["message"] = respfromRest
 	jsonResp, err := json.Marshal(resp)
 	if err != nil {
 		log.Fatalf("Error happened in JSON marshal. Err: %s", err)
 	}
 	rw.Write(jsonResp)
-	startServer(number)
 }
 
-func startServer(num string) {
+func startServer(username string) string {
 	c := http.Client{Timeout: time.Second}
-	req, err := http.NewRequest(`POST`, `http://localhost:8081/concat`, nil)
+	req, err := http.NewRequest(`POST`, `http://localhost:8080/concat`, nil)
 	if err != nil {
 		fmt.Printf("Error: %s\\n", err)
-		return
+		return "Something wrong with your request"
 	}
-
-	body := `{"jsonrpc": 2.0,"method": "concat.ConcatNumbers","params": [{"Content": "num"}]}`
+	body := `{"jsonrpc": 2.0,"method": "Words.Multiply","params": [{"A": "num", "B": "num"}]}`
 	bodytobyte := []byte(body)
 	var bodyStruct BStruct
 	json.Unmarshal(bodytobyte, &bodyStruct)
-	bodyStruct.Params[0].Content = num
-	resultBody, _ := json.Marshal(&BStruct{Jsonrpc: 2.0, Method: "concat.ConcatNumbers", Params: bodyStruct.Params})
-
+	bodyStruct.Params[0].A = username
+	bodyStruct.Params[0].B = "Hello"
+	resultBody, _ := json.Marshal(&BStruct{
+		Jsonrpc: 2.0,
+		Method:  "Words.Multiply",
+		Params:  bodyStruct.Params,
+	})
 	req.Header.Add(`Content-Type`, `application/json`)
 	neededBody := io.NopCloser(bytes.NewReader(resultBody))
 	req.Body = neededBody
+	// send request
 	resp, err := c.Do(req)
 	if err != nil {
 		fmt.Printf("Error: %s\\n", err)
-		return
+		return "Error with request from REST server to JSON_RPC server"
 	}
+	// read and print response body
+	bodyBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	var bodyResponse BodyResponse
+	json.Unmarshal(bodyBytes, &bodyResponse)
 	defer resp.Body.Close()
+	return string(bodyResponse.Result)
 }
 
 func main() {
@@ -78,8 +109,8 @@ func main() {
 		ReadHeaderTimeout: time.Millisecond * 200,
 		Handler:           router,
 	}
-	// "localhost:5000/{number}"
-	router.HandleFunc("/{number}", doSomething)
+	// "localhost:5000/{username}"
+	router.HandleFunc("/{username}", doSomething)
 
 	go func() {
 		log.Println(`Web Server started`)
