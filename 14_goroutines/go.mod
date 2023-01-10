@@ -1,3 +1,3 @@
-module github.com/Alena557miles/collect
+module github.com/Alena557miles/goroutines
 
 go 1.19

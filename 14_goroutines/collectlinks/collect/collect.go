@@ -5,11 +5,9 @@ import (
 	"os"
 	"regexp"
 	"strings"
-	"sync"
 )
 
 type Collect struct {
-	mu            sync.RWMutex
 	_arrayOfLinks []string
 }
 
@@ -19,8 +17,6 @@ func New() *Collect {
 }
 
 func (c *Collect) FindLinks(fileContent string) string {
-	c.mu.Lock()
-	defer c.mu.Unlock()
 	re, err := regexp.Compile(`(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])`)
 	if err != nil {
 		fmt.Println(err)
