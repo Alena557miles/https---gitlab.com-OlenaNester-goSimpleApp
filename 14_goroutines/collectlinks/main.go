@@ -6,13 +6,9 @@ import (
 	"os"
 	"strings"
 	"sync"
-	"time"
 )
 
 func main() {
-	var wg sync.WaitGroup
-	var wgResult sync.WaitGroup
-	res := make(chan string)
 	var result []string
 
 	fileContent, err := os.ReadFile("google.golang.txt")
@@ -20,7 +16,7 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-
+	c := collect.New()
 	var n, k int
 	k = 5
 	n = len(fileContent) / k
@@ -33,54 +29,18 @@ func main() {
 		m[i] = fileContent[i : i+n]
 		i = i + n
 	}
-	c := collect.New()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*0]))
-		time.Sleep(time.Second * 2)
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*1]))
-		time.Sleep(time.Second * 2)
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*2]))
-		time.Sleep(time.Second * 2)
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*3]))
-		time.Sleep(time.Second * 2)
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*4]))
-		time.Sleep(time.Second * 2)
-	}()
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		res <- c.FindLinks(string(m[n*5]))
-		time.Sleep(time.Second * 2)
-	}()
 
-	wgResult.Add(1)
-	go func() {
-		defer wgResult.Done()
-		for i := range res {
-			result = append(result, i)
-		}
-	}()
+	var wg sync.WaitGroup
+	wg.Add(len(m))
+	for i, _ := range m {
+		go func(m map[int][]byte, n int, i int) {
+			x := c.FindLinks(string(m[n*i]))
+			fmt.Println(x)
+			result = append(result, x)
+			wg.Done()
+		}(m, n, i)
+	}
 	wg.Wait()
-	close(res)
-	wgResult.Wait()
 
 	data := strings.Join(result, " ")
 	collect.CreateFileandWriteData("final", data)
