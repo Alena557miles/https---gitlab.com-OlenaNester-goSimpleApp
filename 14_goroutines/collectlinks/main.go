@@ -35,7 +35,6 @@ func main() {
 	for i, _ := range m {
 		go func(m map[int][]byte, n int, i int) {
 			x := c.FindLinks(string(m[n*i]))
-			fmt.Println(x)
 			result = append(result, x)
 			wg.Done()
 		}(m, n, i)
