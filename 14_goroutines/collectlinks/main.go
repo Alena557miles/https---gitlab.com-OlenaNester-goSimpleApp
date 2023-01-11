@@ -32,12 +32,12 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(len(m))
-	for i, _ := range m {
-		go func(m map[int][]byte, n int, i int) {
-			x := c.FindLinks(string(m[n*i]))
+	for _, p := range m {
+		go func(p []byte) {
+			x := c.FindLinks(string(p))
 			result = append(result, x)
 			wg.Done()
-		}(m, n, i)
+		}(p)
 	}
 	wg.Wait()
 
