@@ -1,25 +1,24 @@
 package main
 
 import (
-	"observer-pattern-golang/publisher"
+	"observer-pattern-golang/subject"
 	"observer-pattern-golang/subscriber"
 )
 
 func main() {
-	p := publisher.NewPublisher()
+	a := subject.OccupiedTerritory("Ukraine", 120.7)
 
-	s := subscriber.NewSubscriber("23")
-	p.AddSubscribers(s)
-	p.Notify("sun is shining")
+	s1 := subscriber.NewSubscriber("Ivan")
+	s2 := subscriber.NewSubscriber("Svetlana")
+	a.AddSubscriber(s1)
+	a.AddSubscriber(s2)
 
-	s1 := subscriber.NewSubscriber("4")
-	p.AddSubscribers(s1)
-	p.Notify("hello")
+	a.FreeTerritory(120)
+	//a.FreeTerritory(0.7)
 
-	s3 := subscriber.NewSubscriber("67")
-	p.AddSubscribers(s3)
-	p.RemoveSubscriber("23")
-
-	p.Notify("bye")
+	s3 := subscriber.NewSubscriber("Oleksiy")
+	a.AddSubscriber(s3)
+	a.RemoveSubscriber("Ivan")
+	a.FreeTerritory(200)
 
 }

@@ -1,6 +1,8 @@
 package publisher
 
-import "observer-pattern-golang/subscriber"
+import (
+	"observer-pattern-golang/subscriber"
+)
 
 type Publisher struct {
 	subscribers map[string]*subscriber.Subscriber
@@ -9,15 +11,15 @@ type Publisher struct {
 func NewPublisher() *Publisher {
 	return &Publisher{make(map[string]*subscriber.Subscriber)}
 }
-func (p *Publisher) AddSubscribers(subscriber *subscriber.Subscriber) {
+func (p *Publisher) AddSubscriber(subscriber *subscriber.Subscriber) {
 	p.subscribers[subscriber.Id()] = subscriber
 }
 func (p *Publisher) RemoveSubscriber(subId string) {
 	delete(p.subscribers, subId)
 }
-func (p *Publisher) Notify(msg string) {
+func (p *Publisher) Notify(sq float32) {
 	for _, subscriber := range p.subscribers {
-		subscriber.React(msg)
+		subscriber.React(sq)
 	}
 }
 
