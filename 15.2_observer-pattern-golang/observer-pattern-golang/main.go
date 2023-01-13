@@ -13,12 +13,11 @@ func main() {
 	a.AddSubscriber(s1)
 	a.AddSubscriber(s2)
 
-	a.FreeTerritory(120)
-	//a.FreeTerritory(0.7)
+	a.FreeTerritory(68.4)
 
 	s3 := subscriber.NewSubscriber("Oleksiy")
 	a.AddSubscriber(s3)
 	a.RemoveSubscriber("Ivan")
-	a.FreeTerritory(200)
+	a.FreeTerritory(70)
 
 }
