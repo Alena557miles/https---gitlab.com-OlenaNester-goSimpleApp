@@ -36,3 +36,13 @@ func (a *Area) FreeTerritory(sq float32) {
 		a.Notify(a.sq)
 	}
 }
+
+type Subscriber interface {
+	React(msg float32)
+	Id() string
+}
+
+type Publisher interface {
+	AddSubscriber(Subscriber)
+	RemoveSubscriber(subId string)
+}
